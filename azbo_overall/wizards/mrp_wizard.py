@@ -31,6 +31,7 @@ class MRPWizard(models.TransientModel):
             'user_id': self.env.user.id,
             'location_dest_id': 1,
             'product_uom_id': self.uom_id.id,
+            'bom_id': self.mo_id.id,
             'product_id': self.mo_id.product_tmpl_id.product_variant_id.id,
             'move_raw_ids': line_val,
         })

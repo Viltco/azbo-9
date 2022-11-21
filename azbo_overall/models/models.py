@@ -21,6 +21,7 @@ class BOMInh(models.Model):
     is_sample_order = fields.Boolean('Sample Order')
 
     sale_count = fields.Integer(compute='get_sale_count')
+    mo_count = fields.Integer(compute='get_mo_count')
 
     def button_create_sample_open_wizard(self):
         return {
@@ -60,6 +61,22 @@ class BOMInh(models.Model):
             'domain': [('bom_id', '=', self.id)],
             'view_type': 'form',
             'res_model': 'sale.order',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
+
+    def get_mo_count(self):
+        for rec in self:
+            count = self.env['mrp.production'].search_count([('bom_id', '=', self.id)])
+            rec.mo_count = count
+
+    def action_mo_order_view(self):
+        return {
+            'name': _('Manufacturing Orders'),
+            'domain': [('bom_id', '=', self.id)],
+            'view_type': 'form',
+            'res_model': 'mrp.production',
             'view_id': False,
             'view_mode': 'tree,form',
             'type': 'ir.actions.act_window',

@@ -18,4 +18,6 @@ from odoo.exceptions import AccessError, UserError
 class MRPProdInh(models.Model):
     _inherit = 'mrp.production'
 
+    bom_id = fields.Many2one('mrp.bom', 'BOM Ref')
+
 

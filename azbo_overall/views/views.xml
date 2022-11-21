@@ -33,6 +33,13 @@
                             attrs="{'invisible': [('company_id', '!=', 9)]}">
                         <field string="SO's" name="sale_count" widget="statinfo" />
                     </button>
+                    <button class="oe_stat_button"
+                            icon="fa-wrench"
+                            type="object"
+                            name="action_mo_order_view"
+                            attrs="{'invisible': [('company_id', '!=', 9)]}">
+                        <field string="MO's" name="mo_count" widget="statinfo" />
+                    </button>
                 </xpath>
 
                 <xpath expr="//group[1]/group[1]/div" position="after">
