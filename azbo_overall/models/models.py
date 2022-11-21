@@ -22,8 +22,16 @@ class BOMInh(models.Model):
 
     sale_count = fields.Integer(compute='get_sale_count')
 
-    def button_create_sample(self):
-        pass
+    def button_create_sample_open_wizard(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create Sample Order',
+            'view_id': self.env.ref('azbo_overall.view_mrp_wizard_form', False).id,
+            'target': 'new',
+            'context': {'default_mo_id': self.id},
+            'res_model': 'mrp.wizard',
+            'view_mode': 'form',
+        }
 
     def button_create_sale(self):
         line_val = []

@@ -19,14 +19,17 @@
     'version': '14.0.0.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mrp', 'sale', 'account'],
+    'depends': ['base', 'mrp', 'sale', 'account', 'purchase', 'crm'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        # 'security/security.xml',
+        'security/ir.model.access.csv',
+        'security/security.xml',
         'views/account_asset_views.xml',
+        'views/lead_views.xml',
+        'views/purchase_views.xml',
         'views/res_config_setting_view.xml',
         'views/views.xml',
+        'wizards/mrp_wizard_view.xml',
     ],
 }

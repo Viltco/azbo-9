@@ -10,10 +10,13 @@
                     <div class="row mt16 o_settings_container">
                         <div class="col-12 col-lg-6 o_setting_box" title="Purchase Order Approval">
                             <div class="o_setting_right_pane">
-                                <group string="Minimum Quantity">
+                                <group string="Purchase Order Approval">
+                                    <field name="is_po_approval"/>
+                                </group>
+                                <group string="Minimum Quantity" attrs="{'invisible': [('is_po_approval', '=', False)]}">
                                     <field name="min_qty"/>
                                 </group>
-                                <group string="Maximum Quantity">
+                                <group string="Maximum Quantity" attrs="{'invisible': [('is_po_approval', '=', False)]}">
                                     <field name="max_qty"/>
                                 </group>
                             </div>

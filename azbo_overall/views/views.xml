@@ -9,7 +9,7 @@
                 <xpath expr="//sheet" position="before">
                     <header>
                         <button id="id_button_create_sample"
-                                name="button_create_sample"
+                                name="button_create_sample_open_wizard"
                                 string="Sample Order"
                                 class="btn-primary"
                                 type="object"

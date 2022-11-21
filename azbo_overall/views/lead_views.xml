@@ -1,0 +1,38 @@
+<odoo>
+
+    <record model="ir.ui.menu" id="crm.crm_menu_leads">
+        <field name="name">Inquiry</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="crm.crm_lead_all_leads">
+        <field name="name">Inquiry</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">graph,tree,kanban,pivot,calendar,form,activity</field>
+        <field name="domain">['|', ('type','=','lead'), ('type','=',False)]</field>
+        <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
+        <field name="context">{
+            'default_type':'lead',
+            'search_default_type': 'lead',
+            'search_default_to_process':1}
+        </field>
+    </record>
+
+    <record id="view_crm_lead_form_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='action_set_lost']" position="after">
+                <button name="action_order_cost_sheet"
+                        string="PRE ORDER COST SHEET"
+                        type="object"
+                        class="oe_highlight"
+                        attrs="{'invisible':[('type', 'not in', ['opportunity'])]}"
+                />
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
