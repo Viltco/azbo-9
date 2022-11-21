@@ -70,6 +70,7 @@
               name="Product Group"
               parent="stock.menu_stock_config_settings"
               action="action_product_group_view"
+              groups="flik_product_group.group_product_group"
     />
 
 </odoo>
