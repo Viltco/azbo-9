@@ -44,20 +44,21 @@
 
                 <xpath expr="//group[1]/group[1]/div" position="after">
                     <field name="is_sample_order" attrs="{'invisible': [('company_id', '!=', 9)]}"/>
+                    <field name="lead_id"/>
                 </xpath>
             </field>
         </record>
 
-        <record id="view_sale_order_form_inherit" model="ir.ui.view">
-            <field name="name">sale.order.inherit</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/>
-            <field type="xml" name="arch">
-                <xpath expr="//field[@name='partner_shipping_id']" position="after">
-                    <field name="bom_id" readonly="1" attrs="{'invisible': [('company_id', '!=', 9)]}"/>
-                </xpath>
-            </field>
-        </record>
+<!--        <record id="view_sale_order_form_inherit" model="ir.ui.view">-->
+<!--            <field name="name">sale.order.inherit</field>-->
+<!--            <field name="model">sale.order</field>-->
+<!--            <field name="inherit_id" ref="sale.view_order_form"/>-->
+<!--            <field type="xml" name="arch">-->
+<!--                <xpath expr="//field[@name='partner_shipping_id']" position="after">-->
+<!--                    <field name="bom_id" readonly="1" attrs="{'invisible': [('company_id', '!=', 9)]}"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
 
 <!--        <record id="view_stock_picking_form_inherit" model="ir.ui.view">-->
 <!--            <field name="name">stock.picking.inherit</field>-->

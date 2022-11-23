@@ -15,9 +15,19 @@ from odoo.tools.misc import format_date, OrderedSet
 from odoo.exceptions import AccessError, UserError
 
 
+class StockMoveInh(models.Model):
+    _inherit = 'stock.move'
+
+    so_id = fields.Many2one('sale.order', string='Sale Ref')
+
+
 class MRPProdInh(models.Model):
     _inherit = 'mrp.production'
 
-    bom_id = fields.Many2one('mrp.bom', 'BOM Ref')
+    so_id = fields.Many2one('sale.order', string='Sale Ref')
 
 
+class BOMInh(models.Model):
+    _inherit = 'mrp.bom'
+
+    lead_id = fields.Many2one('crm.lead', 'BOM Ref')

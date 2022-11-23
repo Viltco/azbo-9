@@ -12,26 +12,30 @@ class MRPWizard(models.TransientModel):
 
     quantity = fields.Float(string='Quantity')
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure')
-    mo_id = fields.Many2one('mrp.bom', string='MO')
+    bom_id = fields.Many2one('mrp.bom', string='BOM')
 
     def action_create_mo(self):
         line_val = []
-        for line in self.mo_id.bom_line_ids:
+        for line in self.bom_id.bom_line_ids:
             line_val.append((0, 0, {
                 'product_id': line.product_id.id,
                 'name': line.product_id.name,
                 'location_id': 2,
                 'location_dest_id': 1,
-                'product_uom_qty': line.product_qty,
+                'product_uom_qty': line.product_qty * self.quantity,
                 'product_uom': line.product_uom_id.id,
             }))
         record = self.env['mrp.production'].create({
             'date_planned_start': datetime.today(),
             'company_id': self.env.company.id,
             'user_id': self.env.user.id,
-            'location_dest_id': 1,
+            'location_src_id': self.bom_id.picking_type_id.default_location_src_id.id,
+            'location_dest_id': self.bom_id.picking_type_id.default_location_dest_id.id,
             'product_uom_id': self.uom_id.id,
-            'bom_id': self.mo_id.id,
-            'product_id': self.mo_id.product_tmpl_id.product_variant_id.id,
+            'bom_id': self.bom_id.id,
+            'product_id': self.bom_id.product_tmpl_id.product_variant_id.id,
+            'product_qty': self.quantity,
             'move_raw_ids': line_val,
+            'state': 'to_close',
         })
+        record.action_confirm()

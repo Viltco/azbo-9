@@ -5,4 +5,5 @@ from . import models
 from . import res_config_setting
 from . import purchase
 from . import lead
-# from . import mrp
+from . import mrp
+from . import sale

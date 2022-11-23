@@ -29,19 +29,19 @@ class BOMInh(models.Model):
             'name': 'Create Sample Order',
             'view_id': self.env.ref('azbo_overall.view_mrp_wizard_form', False).id,
             'target': 'new',
-            'context': {'default_mo_id': self.id},
+            'context': {'default_bom_id': self.id, 'default_uom_id': self.product_uom_id.id, 'default_quantity': self.product_qty},
             'res_model': 'mrp.wizard',
             'view_mode': 'form',
         }
 
     def button_create_sale(self):
         line_val = []
-        for line in self.bom_line_ids:
-            line_val.append((0, 0, {
-                'product_id': line.product_id.id,
-                'product_uom_qty': line.product_qty,
-                'product_uom': line.product_uom_id.id,
-            }))
+        # for line in self.bom_line_ids:
+        line_val.append((0, 0, {
+            'product_id': self.product_tmpl_id.product_variant_id.id,
+            'product_uom_qty': self.product_qty,
+            'product_uom': self.product_uom_id.id,
+        }))
         record = self.env['sale.order'].create({
             'date_order': datetime.today(),
             'company_id': self.company_id.id,
@@ -49,6 +49,22 @@ class BOMInh(models.Model):
             'partner_id': self.company_id.partner_id.id,
             'order_line': line_val,
         })
+
+    # def button_create_sale(self):
+    #     line_val = []
+    #     for line in self.bom_line_ids:
+    #         line_val.append((0, 0, {
+    #             'product_id': line.product_id.id,
+    #             'product_uom_qty': line.product_qty,
+    #             'product_uom': line.product_uom_id.id,
+    #         }))
+    #     record = self.env['sale.order'].create({
+    #         'date_order': datetime.today(),
+    #         'company_id': self.company_id.id,
+    #         'bom_id': self.id,
+    #         'partner_id': self.company_id.partner_id.id,
+    #         'order_line': line_val,
+    #     })
 
     def get_sale_count(self):
         for rec in self:
@@ -83,8 +99,8 @@ class BOMInh(models.Model):
         }
 
 
-class SaleInh(models.Model):
-    _inherit = 'sale.order'
-
-    bom_id = fields.Many2one('mrp.bom', 'BOM Ref')
+# class SaleInh(models.Model):
+#     _inherit = 'sale.order'
+#
+#     bom_id = fields.Many2one('mrp.bom', 'BOM Ref')
 
