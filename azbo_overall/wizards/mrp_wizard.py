@@ -20,8 +20,8 @@ class MRPWizard(models.TransientModel):
             line_val.append((0, 0, {
                 'product_id': line.product_id.id,
                 'name': line.product_id.name,
-                'location_id': 2,
-                'location_dest_id': 1,
+                'location_id': self.bom_id.picking_type_id.default_location_src_id.id,
+                'location_dest_id': 105,
                 'product_uom_qty': line.product_qty * self.quantity,
                 'product_uom': line.product_uom_id.id,
             }))
