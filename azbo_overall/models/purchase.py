@@ -48,6 +48,28 @@ class PurchaseOrderInherit(models.Model):
                 self.write({
                     'state': 'approve'
                 })
+            else:
+                for order in self:
+                    if order.state not in ['draft', 'sent']:
+                        continue
+                    order._add_supplier_to_product()
+                    # Deal with double validation process
+                    if order.company_id.po_double_validation == 'one_step' \
+                            or (order.company_id.po_double_validation == 'two_step' \
+                                and order.amount_total < self.env.company.currency_id._convert(
+                                order.company_id.po_double_validation_amount, order.currency_id, order.company_id,
+                                order.date_order or fields.Date.today())) \
+                            or order.user_has_groups('purchase.group_purchase_manager'):
+                        order.button_approve()
+                    else:
+                        order.write({'state': 'to approve'})
+                    if order.partner_id not in order.message_partner_ids:
+                        order.message_subscribe([order.partner_id.id])
+                # for line in self.order_line:
+                #     line.move_ids.description = line.name
+                #     for rec_line in line.move_ids.move_line_ids:
+                #         rec_line.description = line.name
+                return True
         else:
             for order in self:
                 if order.state not in ['draft', 'sent']:
