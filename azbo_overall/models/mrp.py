@@ -30,4 +30,4 @@ class MRPProdInh(models.Model):
 class BOMInh(models.Model):
     _inherit = 'mrp.bom'
 
-    lead_id = fields.Many2one('crm.lead', 'BOM Ref')
+    lead_id = fields.Many2one('crm.lead', 'Inquiry Ref')

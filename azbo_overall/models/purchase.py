@@ -43,11 +43,20 @@ class PurchaseOrderInherit(models.Model):
         is_approve = self.env['ir.config_parameter'].get_param('azbo_overall.is_po_approval')
         min_qty = self.env['ir.config_parameter'].get_param('azbo_overall.min_qty')
         max_qty = self.env['ir.config_parameter'].get_param('azbo_overall.max_qty')
+        min_price = self.env['ir.config_parameter'].get_param('azbo_overall.min_price')
+        flag = False
+        for line in self.order_line:
+            if line.product_qty < float(min_qty) or line.product_qty > float(max_qty) or self.amount_total > float(min_price):
+                flag = True
         if is_approve:
-            if self.total_quantity < float(min_qty) or self.total_quantity > float(max_qty):
+            if flag == True:
                 self.write({
                     'state': 'approve'
                 })
+            # if self.total_quantity < float(min_qty) or self.total_quantity > float(max_qty):
+            #     self.write({
+            #         'state': 'approve'
+            #     })
             else:
                 for order in self:
                     if order.state not in ['draft', 'sent']:

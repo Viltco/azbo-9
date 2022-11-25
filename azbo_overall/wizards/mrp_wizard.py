@@ -18,31 +18,41 @@ class MRPWizard(models.TransientModel):
         line_vals = []
         # bom_id = self.env['mrp.bom'].search([('product_id', '=', line.product_id.id)])
         # print(bom_id)
-        for bom_line in self.bom_id.bom_line_ids:
-            line_vals.append((0, 0, {
-                'product_id': bom_line.product_id.id,
-                'name': bom_line.product_id.name,
-                'location_id': self.bom_id.picking_type_id.default_location_src_id.id,
-                'location_dest_id': 105,
-                # 'product_uom_qty':  bom_line.product_qty * self.quantity,
-                'product_uom_qty':  bom_line.product_qty * self.quantity,
-                'product_uom': bom_line.product_uom_id.id,
-            }))
-            line_vals.append(line_vals)
-        print(line_vals)
+        # for bom_line in self.bom_id.bom_line_ids:
+        #     line_vals.append((0, 0, {
+        #         'product_id': bom_line.product_id.id,
+        #         'name': bom_line.product_id.name,
+        #         'location_id': self.bom_id.picking_type_id.default_location_src_id.id,
+        #         'location_dest_id': 105,
+        #         # 'product_uom_qty':  bom_line.product_qty * self.quantity,
+        #         'product_uom_qty':  bom_line.product_qty * self.quantity,
+        #         'product_uom': bom_line.product_uom_id.id,
+        #     }))
+        #     line_vals.append(line_vals)
         vals = {
             # 'picking_for_id': self.id,
+            # 'product_id': self.bom_id.product_id.id,
             'product_id': self.bom_id.product_id.id,
             'company_id': self.env.user.company_id.id,
             'date_planned_start': fields.Date.today(),
-            'move_raw_ids': line_vals,
-            'location_dest_id': 105,
+            # 'move_raw_ids': line_vals,
+            # 'location_src_id': 108,
+            'location_src_id': self.bom_id.picking_type_id.default_location_src_id.id,
+            # 'location_dest_id': 105,
+            'location_dest_id': self.bom_id.picking_type_id.default_location_dest_id.id,
             # 'origin': self.name,
             'product_qty': self.quantity,
             'product_uom_id': self.uom_id.id,
         }
         mrp = self.env['mrp.production'].create(vals)
-        print(mrp.product_qty)
+        # mrp.onchange_product_id()
+        # mrp._onchange_bom_id()
+        # mrp._onchange_product_qty()
+        mrp._onchange_move_raw()
+        mrp._onchange_move_finished()
+        mrp._onchange_location_dest()
+        mrp._onchange_producing()
+        # mrp._onchange_workorder_ids()
         # self.show_create_mo = False
 
     # def action_create_mo(self):

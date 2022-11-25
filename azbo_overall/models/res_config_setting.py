@@ -12,4 +12,7 @@ class ConfigSettingsInherit(models.TransientModel):
     max_qty = fields.Float(string='Maximum Quantity',
                            config_parameter='azbo_overall.max_qty')
 
+    min_price = fields.Float(string='Minimum Price',
+                           config_parameter='azbo_overall.min_price')
+
 

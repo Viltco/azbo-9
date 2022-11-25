@@ -44,6 +44,11 @@
 
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="x_css" invisible="1"/>
+                <field name="y_css" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//label[@for='name']" position="attributes">
+                <attribute name="string">Inquiry</attribute>
             </xpath>
 
         </field>
@@ -53,6 +58,34 @@
         <field name="name">crm.lead.tree.inherit</field>
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="x_css" nolabel="1"/>
+                <field name="y_css" nolabel="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_crm_lead_kanban_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="x_css" nolabel="1"/>
+                <field name="y_css" nolabel="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_crm_oppor_tree_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.oppor.tree.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='user_id']" position="after">

@@ -21,6 +21,10 @@
                                    attrs="{'invisible': [('is_po_approval', '=', False)]}">
                                 <field name="max_qty"/>
                             </group>
+                            <group string="Minimum Price"
+                                   attrs="{'invisible': [('is_po_approval', '=', False)]}">
+                                <field name="min_price"/>
+                            </group>
                         </div>
                     </div>
                 </div>
