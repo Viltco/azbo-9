@@ -202,29 +202,32 @@ class MaterialPurchaseRequisition(models.Model):
     def button_agree_requisition(self):
         line_val = []
         for line in self.requisition_line_ids:
-            line_val.append((0, 0, {
-                'product_id': line.product_id.id,
-                'price_unit': line.product_id.standard_price,
-                'product_qty': line.qty,
-                'product_uom_id': line.uom.id,
-            }))
+            if line.requisition_type == 'purchase':
+                line_val.append((0, 0, {
+                    'product_id': line.product_id.id,
+                    'price_unit': line.product_id.standard_price,
+                    'product_qty': line.qty,
+                    'product_uom_id': line.uom.id,
+                }))
         record = self.env['purchase.requisition'].create({
             'ordering_date': datetime.today(),
             'company_id': self.env.company.id,
             'user_id': self.env.user.id,
-            # 'department_id': self.env.user.employee_id.department_id.id,
             'req_id': self.id,
             'line_ids': line_val,
         })
     
     @api.model
     def create(self, vals):
-        name = self.env['ir.sequence'].next_by_code('purchase.requisition.seq')
-        vals.update({
-            'name': name
-            })
+        sequence = self.env.ref('material_purchase_requisitions.purchase_requisition_seq')
+        vals['name'] = sequence.next_by_id()
+        # name = self.env['ir.sequence'].next_by_code('purchase.requisition.seq')
+        # vals.update({
+        #     'name': name
+        #     })
         res = super(MaterialPurchaseRequisition, self).create(vals)
         return res
+
         
     #@api.multi
     def requisition_confirm(self):
