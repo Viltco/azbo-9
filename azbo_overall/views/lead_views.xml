@@ -65,6 +65,10 @@
                 <field name="y_css" nolabel="1"/>
             </xpath>
 
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="string">Inquiry</attribute>
+            </xpath>
+
         </field>
     </record>
 

@@ -7,3 +7,4 @@ from . import purchase
 from . import lead
 from . import mrp
 from . import sale
+from . import account
