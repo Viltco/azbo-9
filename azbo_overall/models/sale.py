@@ -24,6 +24,9 @@ class SaleInh(models.Model):
 
     bom_id = fields.Many2one('mrp.bom', 'BOM Ref')
 
+    is_mo_created = fields.Boolean('Is MO Created')
+    is_req_created = fields.Boolean('Is REQ Created')
+
     def button_create_mo(self):
         product_list = []
         bom = self.env['mrp.bom'].search([])
@@ -62,6 +65,7 @@ class SaleInh(models.Model):
                 mrp._onchange_move_finished()
                 mrp._onchange_location_dest()
                 mrp._onchange_producing()
+        self.is_mo_created = True
 
     # def action_create_mo(self):
         # for line in self.order_line:
@@ -186,4 +190,5 @@ class SaleInh(models.Model):
             'requisition_line_ids': bom_line_val,
         })
         record.requisition_confirm()
+        self.is_req_created = True
 

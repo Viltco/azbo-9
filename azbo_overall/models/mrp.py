@@ -63,7 +63,8 @@ class MRPProdInh(models.Model):
 
     def button_mark_done(self):
         res = super(MRPProdInh, self).button_mark_done()
-        self.action_general_entry()
+        if self.workorder_ids:
+            self.action_general_entry()
         return res
 
     def action_general_entry(self):
