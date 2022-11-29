@@ -26,6 +26,41 @@ class MRPProdInh(models.Model):
 
     so_id = fields.Many2one('sale.order', string='Sale Ref')
 
+    picking_count = fields.Integer(compute='get_picking_count')
+    move_entry_count = fields.Integer(compute='get_move_entry_count')
+
+    def get_picking_count(self):
+        for rec in self:
+            count = self.env['stock.picking'].search_count([('mo_id', '=', self.id)])
+            rec.picking_count = count
+
+    def action_transfer_view(self):
+        return {
+            'name': _('Transfers'),
+            'domain': [('mo_id', '=', self.id)],
+            'view_type': 'form',
+            'res_model': 'stock.picking',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
+
+    def get_move_entry_count(self):
+        for rec in self:
+            count = self.env['account.move'].search_count([('mo_id', '=', self.id)])
+            rec.move_entry_count = count
+
+    def action_move_entry_view(self):
+        return {
+            'name': _('Journal Entries'),
+            'domain': [('mo_id', '=', self.id)],
+            'view_type': 'form',
+            'res_model': 'account.move',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'type': 'ir.actions.act_window',
+        }
+
     def button_mark_done(self):
         res = super(MRPProdInh, self).button_mark_done()
         self.action_general_entry()
@@ -36,12 +71,15 @@ class MRPProdInh(models.Model):
         debit_sum = 0.0
         credit_sum = 0.0
         total = 0
-        journal = self.env['account.journal'].search([('type', '=', 'general')])
+        # journal = self.env['account.journal'].search([('type', '=', 'general')])
         for rec in self:
+            for ln in rec.workorder_ids:
+                journal = ln.workcenter_id.journal_id.id
+                print(journal)
             move_dict = {
                 'ref': rec.name,
-                'journal_id': journal.id,
-                # 'mo_id': self.id,
+                'journal_id': journal,
+                'mo_id': self.id,
                 'currency_id': 2,
                 'date': datetime.today(),
                 'move_type': 'entry',
@@ -99,6 +137,8 @@ class WorkCenterInh(models.Model):
     account_outstanding_id = fields.Many2one('account.account', 'Outstanding Account')
     account_intermediary_id = fields.Many2one('account.account', 'Intermediary Account')
 
+    journal_id = fields.Many2one('account.journal', 'Journal')
+
 
 class WorkOrderInh(models.Model):
     _inherit = 'mrp.workorder'
@@ -114,6 +154,7 @@ class WorkOrderInh(models.Model):
             'location_id': self.workcenter_id.location_src_id.id if check else self.workcenter_id.location_dest_id.id,
             'location_dest_id': self.workcenter_id.location_dest_id.id if check else self.workcenter_id.location_src_id.id,
             'picking_type_id': self.workcenter_id.picking_type_id.id,
+            'mo_id': self.production_id.id,
         }
         picking = self.env['stock.picking'].create(vals)
         lines = {

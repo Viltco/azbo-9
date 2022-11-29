@@ -32,6 +32,7 @@
         'views/purchase_views.xml',
         'views/res_config_setting_view.xml',
         'views/sale_views.xml',
+        'views/stock_picking_views.xml',
         'views/views.xml',
         'wizards/mrp_wizard_view.xml',
     ],

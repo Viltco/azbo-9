@@ -8,6 +8,9 @@
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="mobile" attrs="{'invisible': [('move_type', '!=', 'out_invoice')]}"/>
             </xpath>
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="mo_id" attrs="{'invisible': [('move_type', '!=', 'entry')]}" invisible="1"/>
+            </xpath>
         </field>
     </record>
 

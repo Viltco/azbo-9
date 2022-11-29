@@ -15,8 +15,8 @@ from odoo.tools.misc import format_date, OrderedSet
 from odoo.exceptions import AccessError, UserError
 
 
-class AccountMoveInh(models.Model):
-    _inherit = 'account.move'
+class StockPickingInh(models.Model):
+    _inherit = 'stock.picking'
 
-    mobile = fields.Char(string='Mobile', related='partner_id.mobile')
     mo_id = fields.Many2one('mrp.production', string='MO Ref')
+
